@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>League of Legends — Data Vizualizacija</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ══════════ HEADER ══════════ -->
+<header id="header">
+  <div>
+    <h1>⚔ LOL STATS</h1>
+    <div class="sub">LEAGUE OF LEGENDS · DATA VIZUALIZACIJA</div>
+  </div>
+  <div id="breadcrumb" style="font-size:.8rem;color:var(--text-dim);letter-spacing:1px"></div>
+</header>
+
+<!-- Tooltip -->
+<div id="tt"></div>
+
+<!-- ══════════ HOME VIEW ══════════ -->
+<div id="home-view" class="view active">
+  <div id="map-wrap">
+    <img id="map-img" src="assets/summoners_rift.png" alt="Summoner's Rift" />
+
+    <button class="lane-btn" id="btn-top" onclick="openLane('Top')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#E84057" stroke-width="2.2"><path d="M12 2L22 12H17V22H7V12H2Z"/></svg>
+      <span>TOP</span>
+    </button>
+    <button class="lane-btn" id="btn-jgl" onclick="openLane('Jungle')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#1DB954" stroke-width="2.2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+      <span>JUNGLE</span>
+    </button>
+    <button class="lane-btn" id="btn-mid" onclick="openLane('Middle')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#4D8FCA" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+      <span>MID</span>
+    </button>
+    <button class="lane-btn" id="btn-bot" onclick="openLane('Bottom')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#C89B3C" stroke-width="2.2"><path d="M12 22L2 12H7V2H17V12H22Z"/></svg>
+      <span>BOT</span>
+    </button>
+    <button class="lane-btn" id="btn-sup" onclick="openLane('Support')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2.2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      <span>SUPPORT</span>
+    </button>
+  </div>
+
+  <div style="margin-top:28px;display:flex;gap:28px;flex-wrap:wrap;justify-content:center;">
+    <div style="text-align:center">
+      <div style="font-family:'Cinzel',serif;font-size:1.8rem;color:var(--gold)" id="total-champs">—</div>
+      <div style="font-size:.68rem;color:var(--text-dim);letter-spacing:2px">UKUPNO CHAMPIONA</div>
+    </div>
+    <div style="width:1px;background:var(--blue-border)"></div>
+    <div style="text-align:center">
+      <div style="font-family:'Cinzel',serif;font-size:1.8rem;color:var(--teal)" id="avg-wr">—</div>
+      <div style="font-size:.68rem;color:var(--text-dim);letter-spacing:2px">NAJPOPULARNIJI</div>
+    </div>
+    <div style="width:1px;background:var(--blue-border)"></div>
+    <div style="text-align:center">
+      <div style="font-family:'Cinzel',serif;font-size:1.8rem;color:var(--top-color)" id="best-name">—</div>
+      <div style="font-size:.68rem;color:var(--text-dim);letter-spacing:2px">NAJVEĆI WIN RATE</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ LANE VIEW ══════════ -->
+<div id="lane-view" class="view">
+  <div class="lane-header">
+    <button class="back-btn" onclick="showView('home')">← MAPA</button>
+    <h2 id="lane-title" style="color:var(--gold)">TOP LANE</h2>
+    <span id="champ-count" style="font-size:.78rem;color:var(--text-dim);letter-spacing:1px;margin-left:8px"></span>
+    <button class="cmp-btn" id="cmp-toggle" onclick="toggleCmp()">⚖ USPOREDI</button>
+  </div>
+  <div class="ctrl-bar">
+    <span class="sort-lbl">SORTIRAJ PO:</span>
+    <select class="sort-sel" id="sort-sel" onchange="updateSort()">
+      <option value="winrate">Win Rate</option>
+      <option value="banrate">Ban Rate</option>
+      <option value="popularity">Popularnost</option>
+      <option value="kills">Kills (avg)</option>
+      <option value="difficulty">Težina</option>
+      <option value="name">Ime (A-Z)</option>
+      <option value="attack">Napad</option>
+      <option value="defense">Obrana</option>
+      <option value="magic">Magija</option>
+    </select>
+    <button class="dir-btn active" id="desc-btn" onclick="setDir('desc')">↓ DESC</button>
+    <button class="dir-btn" id="asc-btn" onclick="setDir('asc')">↑ ASC</button>
+  </div>
+  <div id="champ-grid"></div>
+</div>
+
+<!-- ══════════ COMPARE PANEL (fixed bottom) ══════════ -->
+<div id="cmp-panel">
+  <span style="font-size:.7rem;color:var(--text-dim);letter-spacing:1px;white-space:nowrap">USPOREDBA:</span>
+  <div class="cmp-slot" id="slot-a"><span class="sl-empty">Odaberi 1. championa</span></div>
+  <div style="font-family:'Cinzel',serif;font-size:1.2rem;color:var(--gold);opacity:.6">VS</div>
+  <div class="cmp-slot" id="slot-b"><span class="sl-empty">Odaberi 2. championa</span></div>
+  <button class="cmp-run" id="cmp-run-btn" onclick="runCompare()" disabled>PRIKAŽI →</button>
+  <button class="cmp-cancel" onclick="cancelCmp()">✕ ODUSTANI</button>
+</div>
+
+<!-- ══════════ DETAIL VIEW ══════════ -->
+<div id="detail-view" class="view">
+  <div class="detail-hdr">
+    <div id="det-avatar-wrap"></div>
+    <div class="detail-info">
+      <div class="det-name" id="det-name"></div>
+      <div class="det-title" id="det-title-el"></div>
+      <div class="det-tags" id="det-tags"></div>
+      <div class="det-blurb" id="det-blurb"></div>
+    </div>
+    <button class="back-detail" onclick="backToLane()">← NATRAG</button>
+  </div>
+  <div class="stats-row" id="stats-row"></div>
+  <div class="charts-grid">
+    <div class="chart-panel"><h3>📊 STAT PROFIL (RADAR)</h3><div id="radar-chart"></div></div>
+    <div class="chart-panel"><h3>📈 VS LANE PROSJEK</h3><div id="bar-chart"></div></div>
+    <div class="chart-panel full-w"><h3>🏆 WIN RATE — SVI NA LANEU</h3><div id="dist-chart"></div></div>
+    <div class="chart-panel"><h3>⚔ SPELL LISTA</h3><div id="spell-info"></div></div>
+    <div class="chart-panel"><h3>📋 OSTALE STATISTIKE</h3><div id="other-stats"></div></div>
+  </div>
+</div>
+
+<!-- ══════════ COMPARE VIEW ══════════ -->
+<div id="compare-view" class="view">
+  <div class="cmp-hdr">
+    <button class="back-btn" onclick="backToLane()">← NATRAG NA LANE</button>
+    <h2>USPOREDBA CHAMPIONA</h2>
+  </div>
+  <div id="cmp-vs-hdr" style="display:flex;align-items:center;gap:16px;margin-bottom:24px"></div>
+  <div class="charts-grid">
+    <div class="chart-panel"><h3>📊 STAT PROFIL — USPOREDBA</h3><div id="cmp-radar"></div></div>
+    <div class="chart-panel"><h3>⚔ KDA USPOREDBA</h3><div id="cmp-kda"></div></div>
+    <div class="chart-panel full-w"><h3>🏅 WIN / BAN / POPULARNOST</h3><div id="cmp-wbp"></div></div>
+  </div>
+</div>
+
+<!-- ══════════ JAVASCRIPT — učitaj skripte ══════════ -->
+<script src="js/data.js"></script>
+<script src="js/config.js"></script>
+<script src="js/views.js"></script>
+<script src="js/grid.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/compare.js"></script>
+<script>
+  // Pokretanje aplikacije
+  initHome();
+</script>
+
+</body>
+</html>
