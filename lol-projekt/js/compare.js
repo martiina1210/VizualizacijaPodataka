@@ -1,6 +1,4 @@
-// compare.js — Compare mode i Compare view grafovi
 
-/** Aktivira / deaktivira compare mode */
 function toggleCmp() {
   cmpMode = !cmpMode;
   cmpA = cmpB = null;
@@ -21,12 +19,7 @@ function cancelCmp() {
   renderGrid();
 }
 
-/**
- * Logika odabira championа u compare modeu:
- * - Slot A prazan → popuni A
- * - Slot B prazan → popuni B
- * - Oba puna → premjesti B na A, novi je B
- */
+
 function handleCmpClick(d) {
   if (!cmpA) { cmpA = d; }
   else if (!cmpB && d.id !== cmpA.id) { cmpB = d; }
@@ -51,7 +44,6 @@ function updateCmpPanel() {
 
   sa.innerHTML = slotHtml(cmpA); sb.innerHTML = slotHtml(cmpB);
   sa.classList.toggle('filled', !!cmpA); sb.classList.toggle('filled', !!cmpB);
-  // Gumb je aktivan samo kad su oba championa odabrana
   runBtn.disabled = !(cmpA && cmpB);
 }
 
