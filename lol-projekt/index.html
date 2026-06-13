@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<!-- ══════════ HEADER ══════════ -->
+<!-- header-->
 <header id="header">
   <div>
     <h1>⚔ LOL STATS</h1>
@@ -19,10 +19,10 @@
   <div id="breadcrumb" style="font-size:.8rem;color:var(--text-dim);letter-spacing:1px"></div>
 </header>
 
-<!-- Tooltip -->
+<!-- tooltip -->
 <div id="tt"></div>
 
-<!-- ══════════ HOME VIEW ══════════ -->
+<!-- home-->
 <div id="home-view" class="view active">
   <div id="map-wrap">
     <img id="map-img" src="assets/summoners_rift.png" alt="Summoner's Rift" />
@@ -67,7 +67,7 @@
   </div>
 </div>
 
-<!-- ══════════ LANE VIEW ══════════ -->
+<!-- lane view -->
 <div id="lane-view" class="view">
   <div class="lane-header">
     <button class="back-btn" onclick="showView('home')">← MAPA</button>
@@ -94,7 +94,7 @@
   <div id="champ-grid"></div>
 </div>
 
-<!-- ══════════ COMPARE PANEL (fixed bottom) ══════════ -->
+<!-- compare panel ══════════ -->
 <div id="cmp-panel">
   <span style="font-size:.7rem;color:var(--text-dim);letter-spacing:1px;white-space:nowrap">USPOREDBA:</span>
   <div class="cmp-slot" id="slot-a"><span class="sl-empty">Odaberi 1. championa</span></div>
@@ -104,7 +104,7 @@
   <button class="cmp-cancel" onclick="cancelCmp()">✕ ODUSTANI</button>
 </div>
 
-<!-- ══════════ DETAIL VIEW ══════════ -->
+<!--detail view -->
 <div id="detail-view" class="view">
   <div class="detail-hdr">
     <div id="det-avatar-wrap"></div>
@@ -126,7 +126,7 @@
   </div>
 </div>
 
-<!-- ══════════ COMPARE VIEW ══════════ -->
+<!-- compare view -->
 <div id="compare-view" class="view">
   <div class="cmp-hdr">
     <button class="back-btn" onclick="backToLane()">← NATRAG NA LANE</button>
@@ -140,7 +140,7 @@
   </div>
 </div>
 
-<!-- ══════════ JAVASCRIPT — učitaj skripte ══════════ -->
+<!-- javascript -->
 <script src="js/data.js"></script>
 <script src="js/config.js"></script>
 <script src="js/views.js"></script>
@@ -148,7 +148,7 @@
 <script src="js/charts.js"></script>
 <script src="js/compare.js"></script>
 <script>
-  // Pokretanje aplikacije
+  
   initHome();
 </script>
 
