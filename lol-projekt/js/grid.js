@@ -1,4 +1,4 @@
-// grid.js — Grid prikaz championа i sortiranje (D3 Enter/Update/Exit)
+
 
 /** Ažurira sortKey i crta grid */
 function updateSort() {
@@ -25,18 +25,12 @@ function sorted() {
   });
 }
 
-/**
- * Renderira grid kartica s D3 Enter/Update/Exit pattern-om.
- * - EXIT:  ukloni kartice koje više nisu u podacima (s animacijom)
- * - ENTER: dodaj nove kartice (s fade-in animacijom)
- * - MERGE: ažuriraj sadržaj i reorderiraj prema novom sortu
- */
+
 function renderGrid() {
   const champs = sorted();
   const col    = LANE_COL[lane];
   const sel    = d3.select('#champ-grid');
 
-  // Key funkcija: d.id osigurava da D3 prepozna isti element pri reorderu
   const cards = sel.selectAll('.champ-card').data(champs, d => d.id);
 
   // ── EXIT ── elementi koji više nisu u podacima
@@ -79,11 +73,11 @@ function renderGrid() {
   const merged = enter.merge(cards);
 
   merged.transition().duration(320)
-    .delay((d, i) => Math.min(i * 10, 350)) // sekvencijalni delay
+    .delay((d, i) => Math.min(i * 10, 350)) 
     .style('opacity', 1)
     .style('transform', 'translateY(0)');
 
-  merged.order(); // reorder DOM prema novom sortu (bez brisanja)
+  merged.order(); 
 
   merged.select('.champ-img').attr('src', d => d.imgUrl).attr('alt', d => d.name);
   merged.select('.champ-name').text(d => d.name);
@@ -92,7 +86,6 @@ function renderGrid() {
     .text(d => d.winrate.toFixed(1) + '% WR');
   merged.select('.champ-tags').text(d => d.tags.slice(0, 2).join(' · '));
 
-  // Highlight compare odabranih
   merged.classed('cmp-sel', d =>
     cmpMode && ((cmpA && cmpA.id === d.id) || (cmpB && cmpB.id === d.id))
   );
