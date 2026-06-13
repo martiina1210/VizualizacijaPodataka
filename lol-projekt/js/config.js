@@ -1,6 +1,4 @@
-// config.js — Globalne konstante i pomoćne funkcije
 
-// Boje po laneu
 const LANE_COL = {
   Top:     '#E84057',
   Jungle:  '#1DB954',
@@ -9,7 +7,6 @@ const LANE_COL = {
   Support: '#8B5CF6'
 };
 
-// Nazivi laneva
 const LANE_LBL = {
   Top:     'TOP LANE',
   Jungle:  'JUNGLE',
@@ -18,10 +15,9 @@ const LANE_LBL = {
   Support: 'SUPPORT'
 };
 
-// Data Dragon verzija (Riot CDN)
+
 const DDV = "14.24.1";
 
-// Globalni state aplikacije
 let lane      = null;   // trenutno odabrani lane
 let champ     = null;   // trenutno odabrani champion (detail view)
 let sortKey   = 'winrate';
@@ -29,7 +25,7 @@ let sortDir   = 'desc';
 let cmpMode   = false;  // compare mode aktivan
 let cmpA      = null;   // prvi odabrani champion za usporedbu
 let cmpB      = null;   // drugi odabrani champion za usporedbu
-let laneChamps = [];    // filtrirani championи za trenutni lane
+let laneChamps = [];    // filtrirani championi za trenutni lane
 
 // Tooltip element
 const tt = document.getElementById('tt');
