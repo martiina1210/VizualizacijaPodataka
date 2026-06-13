@@ -1,11 +1,8 @@
-// views.js — Upravljanje viewovima i navigacijom
 
-/** Prebacuje između 4 viewa: home, lane, detail, compare */
 function showView(v) {
   document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
   document.getElementById(v + '-view').classList.add('active');
 
-  // Ažuriraj breadcrumb u headeru
   const bc = document.getElementById('breadcrumb');
   if (v === 'home')   bc.textContent = '';
   else if (v === 'lane')   bc.textContent = LANE_LBL[lane] || '';
@@ -55,8 +52,7 @@ function backToLane() {
   showView('lane');
 }
 
-/** Inicijalizira mapu (učitava sliku) */
+/** Inicijalizira mapu */
 function initMap() {
-  // Slika se učitava relativno — assets/summoners_rift.png
   document.getElementById('map-img').src = 'assets/summoners_rift.png';
 }
