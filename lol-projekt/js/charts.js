@@ -1,8 +1,5 @@
-// charts.js — Sve D3.js vizualizacije (radar, bar, distribucija)
 
-/** Popunjava detail view podacima odabranog championa */
 function renderDetail(c) {
-  // Avatar s fallback mehanizmom
   const wrap = document.getElementById('det-avatar-wrap');
   wrap.innerHTML = `
     <div style="position:relative;width:90px;height:90px;flex-shrink:0">
@@ -93,7 +90,7 @@ function renderRadar(c) {
 
   const col = LANE_COL[lane] || 'var(--gold)';
 
-  // Animirano punjenje (fill-opacity 0 → 0.2)
+  // Animirano punjenje 
   svg.append('polygon')
     .attr('points', pts.map(p => p.join(',')).join(' '))
     .attr('fill', col).attr('fill-opacity', 0).attr('stroke', col).attr('stroke-width', 2)
@@ -229,7 +226,7 @@ function renderDist(c) {
     .attr('opacity', d => d.id === c.id ? 1 : .6)
     .on('mousemove', (ev, d) => showTt(ev, `<b>${d.name}</b><br>WR: ${d.winrate}%<br>Ban: ${d.banrate}%`))
     .on('mouseleave', hideTt)
-    .on('click', (ev, d) => { if (d.id !== c.id) openDetail(d); }) // interaktivnost s detail viewom
+    .on('click', (ev, d) => { if (d.id !== c.id) openDetail(d); }) 
     .transition().duration(450).delay((d, i) => i * 5)
     .attr('y', d => yS(d.winrate))
     .attr('height', d => h - yS(d.winrate));
